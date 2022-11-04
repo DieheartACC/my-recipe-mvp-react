@@ -11,23 +11,24 @@ const RecipeDetailed = ({recipe, setDetailedView, updateRecipeList}) => {
         updateRecipeList();
     }
     return (
-        <div style={{marginLeft:"20px"}}>
+        <div style={{marginLeft: "20px"}}>
             {editRecipe ? <RecipeForm updateRecipeList={updateRecipeList}
                                       setAddRecipe={setEditRecipe}
                                       recipe={recipe}/> :
                 <Grid item>
                     <h2>{recipe.title}
-                        <button style={{marginLeft: "10px"}} onClick={() => {
+                        <Button variant="contained"
+                                style={{marginLeft: "10px"}} onClick={() => {
                             setDetailedView(false);
                         }}>Go Back
-                        </button>
+                        </Button>
                     </h2>
                     <img src={recipe.picUrl} alt={recipe.title}
-                         width={"25%"} height={"25%"}/>
+                         width={"300"} height={"300"}/>
                     <ul>
                         {recipe.ingredientList.map(ingredient => {
                             return (
-                                <li key={ingredient.id}>
+                                <li key={ingredient.id} style={{fontSize:"18px"}}>
                                     {ingredient.units} {ingredient.unitType} {ingredient.name}
                                 </li>
                             )
@@ -35,7 +36,7 @@ const RecipeDetailed = ({recipe, setDetailedView, updateRecipeList}) => {
                     </ul>
                     {recipe.stepList.map((step, index) => {
                         return (
-                            <p key={step.id}>Step {index + 1}: {step.instructions}</p>
+                            <p key={step.id} style={{fontSize:"18px"}}>Step {index + 1}: {step.instructions}</p>
                         )
                     })}
                     <Button variant="outlined" onClick={() => {

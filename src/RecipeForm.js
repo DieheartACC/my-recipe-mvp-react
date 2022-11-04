@@ -1,13 +1,13 @@
-import {Grid, TextField} from "@mui/material";
+import {Button, createTheme, Grid, TextField, ThemeProvider} from "@mui/material";
 import {useState} from "react";
 import Ingredients from "./Ingredients";
 import Steps from "./Steps";
 import axios from "axios";
 
 const RecipeForm = ({updateRecipeList, setAddRecipe, recipe}) => {
-    const [titleInput, setTitleInput] = useState(recipe.title);
-    const [desInput, setDesInput] = useState(recipe.description);
-    const [imgInput, setImgInput] = useState(recipe.picUrl);
+    const [titleInput, setTitleInput] = useState(recipe.title || "No Title");
+    const [desInput, setDesInput] = useState(recipe.description || "No Description");
+    const [imgInput, setImgInput] = useState(recipe.picUrl || "");
     const [ingList, setIngList] = useState(recipe.ingredientList || [{
         name: "",
         unitType: "",
@@ -16,22 +16,22 @@ const RecipeForm = ({updateRecipeList, setAddRecipe, recipe}) => {
     const [stepList, setStepList] = useState(recipe.stepList || [{}]);
 
     const handleSubmit = (event) => {
-        if (recipe.id >= 0) {
-            const recipePatch = {
+        if (recipe.id >= 1) {
+            const patchData = {
                 title: titleInput,
                 picUrl: imgInput,
                 description: desInput
             }
-            patchRecipe(recipePatch);
+            patchRecipe(recipe, patchData);
 
             patchIngredients(recipe, ingList);
 
             patchSteps(recipe, stepList);
         } else {
             const data = {
-                title: titleInput || "No Title",
-                picUrl: imgInput || "",
-                description: desInput || "No Description",
+                title: titleInput,
+                picUrl: imgInput,
+                description: desInput,
                 ingredientList: ingList,
                 stepList: stepList
             };
@@ -44,8 +44,8 @@ const RecipeForm = ({updateRecipeList, setAddRecipe, recipe}) => {
         updateRecipeList();
     }
 
-    const patchRecipe = async (recipe) => {
-        await axios.patch(`http://localhost:8080/recipe/${recipe.id}`, recipe);
+    const patchRecipe = async (recipe, patchData) => {
+        await axios.patch(`http://localhost:8080/recipe/${recipe.id}`, patchData);
     }
 
     const patchIngredients = async (recipe, ingList) => {
@@ -56,17 +56,28 @@ const RecipeForm = ({updateRecipeList, setAddRecipe, recipe}) => {
         await axios.patch(`http://localhost:8080/recipe/${recipe.id}/steps`, stepList);
     }
 
+    const theme = createTheme({
+        palette: {
+            neutral: {
+                main: '#64748B',
+                contrastText: '#fff',
+            },
+        },
+    });
+
     return (
         <div>
-            <button style={{marginBottom: "20px"}} onClick={() => {
+            <Button variant="contained"
+                // color="success"
+                    style={{marginBottom: "20px"}} onClick={() => {
                 setAddRecipe(false);
             }}>Back
-            </button>
+            </Button>
             <form onSubmit={(event) => {
-                handleSubmit(event);
+                event.preventDefault();
             }}>
 
-                <Grid style={{marginBottom:"10px"}} container spacing={2} alignItems="center">
+                <Grid style={{marginBottom: "10px"}} container spacing={2} alignItems="center">
                     <Grid item>
                         <TextField id="outlined-basic" label="Title" variant="outlined"
                                    value={titleInput}
@@ -85,60 +96,77 @@ const RecipeForm = ({updateRecipeList, setAddRecipe, recipe}) => {
                                    }}/>
                     </Grid>
                 </Grid>
-                <Grid style={{marginBottom:"10px"}} container spacing={2} alignItems="center">
+                <Grid style={{marginBottom: "10px"}} container spacing={2} alignItems="center">
                     {ingList.map((ingredient, index) => {
                         return <Ingredients key={index} index={index} setIngList={setIngList} ingList={ingList}/>
                     })}
                     <Grid item>
-                        <button onClick={(event) => {
-                            event.preventDefault();
-                            setIngList([...ingList, {
-                                name: "",
-                                unitType: "",
-                                units: ""
-                            }])
-                        }}>Add More
-                        </button>
+                        <ThemeProvider theme={theme}>
+                            <Button variant="contained"
+                                    color="neutral"
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        setIngList([...ingList, {
+                                            name: "",
+                                            unitType: "",
+                                            units: ""
+                                        }])
+                                    }}>Add More
+                            </Button>
+                        </ThemeProvider>
                         {ingList.length < 2 ? "" :
-                            <button style={{marginLeft: "10px"}} onClick={(event) => {
+                            <Button variant="contained"
+                                    color="error" style={{marginLeft: "10px"}} onClick={(event) => {
                                 event.preventDefault();
                                 let copyArray = ingList.slice();
                                 copyArray.pop();
                                 setIngList(copyArray);
                             }}>Remove
-                            </button>
+                            </Button>
                         }
                     </Grid>
                 </Grid>
-                <Grid style={{marginBottom:"10px"}} container spacing={2} alignItems="center">
+                <Grid style={{marginBottom: "10px"}} container spacing={2} alignItems="center">
                     <Grid item>
                         {stepList.map((step, index) => {
                             return <Steps key={index} index={index} stepList={stepList} setStepList={setStepList}/>
                         })}
                     </Grid>
                     <Grid item>
-                        <button onClick={(event) => {
-                            event.preventDefault();
-                            setStepList([...stepList, {
-                                instructions: ""
-                            }])
-                        }}>Add More
-                        </button>
+                        <ThemeProvider theme={theme}>
+                            <Button variant="contained"
+                                    color="neutral" onClick={(event) => {
+                                event.preventDefault();
+                                setStepList([...stepList, {
+                                    instructions: ""
+                                }])
+                            }}>Add More
+                            </Button>
+                        </ThemeProvider>
                         {stepList.length < 2 ? "" :
-                            <button style={{marginLeft: "10px"}} onClick={(event) => {
+                            <Button variant="contained"
+                                    color="error"
+                                    style={{marginLeft: "10px"}} onClick={(event) => {
                                 event.preventDefault();
                                 let copyArray = stepList.slice();
                                 copyArray.pop();
                                 setStepList(copyArray);
                             }}>Remove
-                            </button>
+                            </Button>
                         }
                     </Grid>
                 </Grid>
-                <Grid item>
-                    <button style={{margin: "0 auto"}} type={"submit"}>Save Recipe</button>
-                </Grid>
             </form>
+            <Grid item>
+                <Button variant="contained"
+                        color="success"
+                        style={{margin: "0 auto"}} type={"submit"}
+                        onClick={(event) => {
+                            handleSubmit(event);
+                            window.location.reload()
+                        }}>Save Recipe
+                </Button>
+            </Grid>
         </div>
     )
 }
