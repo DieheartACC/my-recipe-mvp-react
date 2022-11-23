@@ -77,7 +77,7 @@ const RecipeForm = ({updateRecipeList, setAddRecipe, recipe}) => {
                 event.preventDefault();
             }}>
 
-                <Grid style={{marginBottom: "10px"}} container spacing={2} alignItems="center">
+                <Grid style={{marginBottom: "50px"}} container spacing={2} alignItems="center">
                     <Grid item>
                         <TextField id="outlined-basic" label="Title" variant="outlined"
                                    value={titleInput}
@@ -96,10 +96,12 @@ const RecipeForm = ({updateRecipeList, setAddRecipe, recipe}) => {
                                    }}/>
                     </Grid>
                 </Grid>
-                <Grid style={{marginBottom: "10px"}} container spacing={2} alignItems="center">
-                    {ingList.map((ingredient, index) => {
-                        return <Ingredients key={index} index={index} setIngList={setIngList} ingList={ingList}/>
-                    })}
+                <Grid style={{marginBottom: "50px"}} container spacing={2} alignItems="center">
+                    <Grid item>
+                        {ingList.map((ingredient, index) => {
+                            return <Ingredients key={index} index={index} setIngList={setIngList} ingList={ingList}/>
+                        })}
+                    </Grid>
                     <Grid item>
                         <ThemeProvider theme={theme}>
                             <Button variant="contained"

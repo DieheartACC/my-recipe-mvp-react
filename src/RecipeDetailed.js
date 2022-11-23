@@ -11,7 +11,7 @@ const RecipeDetailed = ({recipe, setDetailedView, updateRecipeList}) => {
         updateRecipeList();
     }
     return (
-        <div style={{marginLeft: "20px"}}>
+        <div style={{marginLeft: "50px"}}>
             {editRecipe ? <RecipeForm updateRecipeList={updateRecipeList}
                                       setAddRecipe={setEditRecipe}
                                       recipe={recipe}/> :

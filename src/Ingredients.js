@@ -4,7 +4,7 @@ const Ingredients = ({index, setIngList, ingList}) => {
     let copyArray = ingList.slice();
 
     return (
-        <Grid item>
+        <Grid item style={{marginBottom:"10px"}}>
             <TextField id="outlined-basic" label="Ingredients" variant="outlined"
                        value={copyArray[index].name || ""}
                        onChange={(event) => {
