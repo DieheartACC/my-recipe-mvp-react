@@ -40,20 +40,20 @@ const RecipeForm = ({updateRecipeList, setAddRecipe, recipe}) => {
     }
 
     const postRequest = async (data) => {
-        await axios.post("http://localhost:8080/recipe", data);
+        await axios.post("http://myrecipesspringboot-env1.eba-zrzgh97k.us-east-1.elasticbeanstalk.com/recipe", data);
         updateRecipeList();
     }
 
     const patchRecipe = async (recipe, patchData) => {
-        await axios.patch(`http://localhost:8080/recipe/${recipe.id}`, patchData);
+        await axios.patch(`http://myrecipesspringboot-env1.eba-zrzgh97k.us-east-1.elasticbeanstalk.com/recipe/${recipe.id}`, patchData);
     }
 
     const patchIngredients = async (recipe, ingList) => {
-        await axios.patch(`http://localhost:8080/recipe/${recipe.id}/ingredients`, ingList);
+        await axios.patch(`http://myrecipesspringboot-env1.eba-zrzgh97k.us-east-1.elasticbeanstalk.com/recipe/${recipe.id}/ingredients`, ingList);
     }
 
     const patchSteps = async (recipe, stepList) => {
-        await axios.patch(`http://localhost:8080/recipe/${recipe.id}/steps`, stepList);
+        await axios.patch(`http://myrecipesspringboot-env1.eba-zrzgh97k.us-east-1.elasticbeanstalk.com/recipe/${recipe.id}/steps`, stepList);
     }
 
     const theme = createTheme({
