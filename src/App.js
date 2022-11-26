@@ -12,7 +12,7 @@ function App() {
     const [searchTerm, setSearchTerm] = useState("")
 
     const updateRecipeList = async () => {
-        const response = await axios.get("http://myrecipesspringboot-env1.eba-zrzgh97k.us-east-1.elasticbeanstalk.com/recipe");
+        const response = await axios.get("https://myrecipesspringboot-env1.eba-zrzgh97k.us-east-1.elasticbeanstalk.com/recipe");
         response.data.sort((a, b) => {
             let ta = a.title.toLowerCase(),
                 tb = b.title.toLowerCase();
