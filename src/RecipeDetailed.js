@@ -7,7 +7,7 @@ const RecipeDetailed = ({recipe, setDetailedView, updateRecipeList}) => {
     const [editRecipe, setEditRecipe] = useState(false);
 
     const deleteRecipe = async () => {
-        await axios.delete(`http://myrecipesspringboot-env1.eba-zrzgh97k.us-east-1.elasticbeanstalk.com/recipe/${recipe.id}`);
+        await axios.delete(`https://myrecipesspringboot-env1.eba-zrzgh97k.us-east-1.elasticbeanstalk.com/recipe/${recipe.id}`);
         updateRecipeList();
     }
     return (
